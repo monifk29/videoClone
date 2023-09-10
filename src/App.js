@@ -1,23 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { fetchVideos } from "./api";
+import Video from "./components/Video";
+import "./App.css";
 
 function App() {
+  const [videos, setVideos] = useState([]);
+  const [page, setPage] = useState(0);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await fetchVideos(page);
+        console.log(data.data.posts);
+        setVideos(data.data.posts);
+        setError(null); // Reset error on success
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+        setError("An error occurred while fetching videos.");
+      }
+    }
+
+    fetchData();
+  }, [page]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <h1 className="Title">Video Clone</h1>
+      <div className="pagination">
+        <button
+          onClick={() => setPage((prevPage) => prevPage - 1)}
+          disabled={page === 0}
         >
-          Learn React
-        </a>
-      </header>
+          Previous Page
+        </button>
+        <p>Page {page + 1}</p>
+        <button
+          onClick={() => setPage((prevPage) => prevPage + 1)}
+          // Disable if no more videos disabled={videos.length === 0}
+        >
+          Next Page
+        </button>
+      </div>
+      {error && <p className="error">{error}</p>}
+      <div className="video-list">
+        {videos?.map((video) => (
+          <Video key={video.postId} video={video} />
+        ))}
+      </div>
     </div>
   );
 }
