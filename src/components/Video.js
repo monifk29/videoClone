@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import '../App.css';
 
 const Video = ({ video }) => {
+
+    const playerRef = useRef(null);
+    console.log(playerRef.current)
+
+    const playVideoOnClick = () => {
+     
+        playerRef.current?.getInternalPlayer(); // Programmatically play the video
+      
+    };
+
     const [likes, setlikes] = useState(video.reaction.count);
     const [liked, setLiked] = useState(video.reaction.voted);
     const [comments, setComments] = useState(video.comment.count)
@@ -26,13 +36,17 @@ const Video = ({ video }) => {
     }
   return (
     <div className="video">
-    <ReactPlayer className = "react-player"
+   <div onClick={playVideoOnClick}> 
+   <ReactPlayer className = "react-player"
+        ref={playerRef}
         url={video.submission.mediaUrl}
         width="100%"
-        // height="auto"
+        // height="100%"
         controls
         light = {video.submission.thumbnail}
+        // playing 
       />
+   </div>
      <div className='Likes-comm'>
         <button onClick={handleLike}>{likes} Likes</button>
         <button onClick={handleComment}>{comments} Comments</button>
