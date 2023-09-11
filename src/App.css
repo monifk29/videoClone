@@ -14,7 +14,7 @@
   margin: auto;
   margin-bottom: 50px;
   border: 1px solid teal;
-  object-fit: contain;
+  /* object-fit: contain; */
 }
 
 .video h2 {
@@ -71,3 +71,16 @@ button:hover{
   color: whitesmoke;
   padding: 10px 20px;
 }
+
+.Likes-comm{
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+/* .react-player{
+  object-fit: cover;
+  width: 80%;
+  border: 1px solid red;
+} */
+
